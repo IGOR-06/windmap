@@ -11,7 +11,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 ######  importando numpy
 import numpy as np
-##########  pandas 
+##########  pandas
 import pandas as pd
 ######  importando cartopy
 import cartopy.crs as ccrs
@@ -183,7 +183,7 @@ def update(frame_no):
 # =============================================================================
 # ######## abrir arquivo nc
 # =============================================================================
-ds = xr.open_dataset('/media/ladsin/DATA/JIC/dados/era5.nc')
+ds = xr.open_dataset('/media/era5.nc')
 ##### definindo campo com duas dimensões escolhendo um index
 campo2D = ds.sel(time = '2016-01-04 00:00:00')
 #### definindo lat lon em grade pelo numpy
@@ -219,8 +219,6 @@ gl.top_labels = False
 gl.right_labels = False
 gl.xlabel_style = {'color': 'black', 'weight': 'bold','fontsize': 12}
 gl.ylabel_style = {'color': 'black', 'weight': 'bold','fontsize': 12}
-# gl.xformatter = LONGITUDE_FORMATTER #coloca o W/L
-# gl.yformatter = LATITUDE_FORMATTER #coloca o N/S
 
 # =============================================================================
 # ######## plotagem de vento e sua escala de cor ####################
@@ -229,7 +227,6 @@ gl.ylabel_style = {'color': 'black', 'weight': 'bold','fontsize': 12}
 U_200 = campo2D['u'].sel(level=200)
 V_200 = campo2D['v'].sel(level=200) #definindo nivel
 magnitude = np.sqrt((U_200**2) + (V_200**2)) #calculando magnitude
-# magnitude = (((U_200**2)+(V_200**2))**0.5)
 ucomp = U_200.to_numpy()
 vcomp = V_200.to_numpy()
 # Calculate the components
@@ -246,7 +243,7 @@ plt.clabel(img1, inline=1, inline_spacing=0, fontsize='10',fmt = '%1.0f', colors
 # =============================================================================
 # #######  plotagem shape do brasil
 # =============================================================================
-mapa_amsul = ShapelyFeature(Reader('/media/ladsin/IGOR06_64/CURSO_PYTHON_RONALDO/amsulrp2.shp').geometries(),
+mapa_amsul = ShapelyFeature(Reader('/media/amsulrp2.shp').geometries(),
                             ccrs.PlateCarree(),
                             edgecolor='gray',
                             facecolor='None',
@@ -260,7 +257,6 @@ plt.colorbar(img1, label='Wind Speed (m/s)', orientation='horizontal', pad=0.03,
 # =============================================================================
 # ###############     Titulo  ##################
 # =============================================================================
-#ax.set_title('Sea Level Pressure(hPa) Geopotencial Height(mgp) 500hPa \n Wind (m/s) 200hPa  {}'.format(pd.to_datetime(ds.time[i].values)), fontsize=16)
 plt.title('Wind (m/s) 200hPa  2016-01-04 00:00', fontsize=10, fontweight='bold')
 #-----------------------------------------------------------------------------------------------------------
 lengths = []
@@ -316,10 +312,7 @@ pbar.close()
 # =============================================================================
 # #################     Salvando imagem     #################################
 # =============================================================================
-#plt.savefig('/home/igor/Documentos/PPGM/PROJETO_PETROBRAS/ETAPA7/LAGIRS/CAMPOS/2010-03-14/slp-hgt500-jet200-{:02d}.png'.format(i), dpi=300)
-# plt.savefig('/home/igor/Documentos/PPGM/PROJETO_PETROBRAS/ETAPA7/LAGIRS/CAMPOS/TCC/slp-hgt500-jet200-2010-03-14', dpi=300)
-# =============================================================================
 # Open the GIF
 print("Opening the GIF...")
 from IPython.display import Image
-Image(open('/media/ladsin/IGOR06_64/ETAPA7/wind.gif','rb').read())
+Image(open('/media/wind.gif','rb').read())
